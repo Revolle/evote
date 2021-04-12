@@ -19,7 +19,9 @@ Specification for *evote* system, for large community.
 
 Two layers of distributed ledger : 
 - many micro-distibuted-ledgers "*e-electoral-office*" : similar to a temporary virtual small electoral office. Created "on the fly", to build a transaction of votes. An app manages this *e-electoral-office*. The communication between users of a *e-electoral-office* is only peer-to-peer and encrypted between users.
-- one *vote-block-chain* : stores the "vote-counting" per *e-electoral-office*. stores the events when a user or a *e-electoral-office* changes their status.
+- one *vote-block-chain* which stores the events of status-changing of :
+  - *e-electoral-office* : *pending*, *voting*, *cancelled*, *voted* with the counting. The *e-electoral-office-id* is used as identifier.
+  - user : *pending*, *voting*, *not-yet-vote*, *voted*. The *user-unique-id* is used as identifier.
 
 One central *authentication-system* :
 - has the list of *vote-block-chain*
