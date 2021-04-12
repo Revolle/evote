@@ -21,7 +21,7 @@ Two layers of distributed ledger :
 - many micro-distibuted-ledgers "*e-electoral-office*" : similar to a temporary virtual small electoral office. Created "on the fly", to build a transaction of votes. An app manages this *e-electoral-office*. The communication between users of a *e-electoral-office* is only peer-to-peer and encrypted between users.
 - one *vote-block-chain* which stores the events of status-changing of :
   - *e-electoral-office* : *pending*, *voting*, *cancelled*, *voted* with the counting. The *e-electoral-office-id* is used as identifier.
-  - user : *pending*, *voting*, *not-yet-vote*, *voted*. The *user-unique-id* is used as identifier.
+  - user : *voting*, *not-yet-vote*, *voted*. The *user-unique-id* is used as identifier.
 
 One central *authentication-system* :
 - has the list of *vote-block-chain*
@@ -30,7 +30,7 @@ One central *authentication-system* :
 
 ### e-electoral-office use-case :
 
-Starting the *e-electoral-office* app, the user makes an authentication on the external *authentication-system* and the *vote-block-chain* he needs. If the users has not the status *voting* in the *vote-block-chain*, the *authentication-system* sends back a *user-unique-id* and his face-photo. This *user-unique-id* is unique for the couple (user, *vote-block-chain*) and not reversible to the user. This *user-unique-id* is delivered to the user. This *user-unique-id* can be used by the user to check his status in the block-chain. The app writes in the *vote-block-chain* the status *voting* for this *user-unique-id*.
+Starting the *e-electoral-office* app, the user makes an authentication on the external *authentication-system* and the *vote-block-chain* he needs. If the users has the right  status  in the *vote-block-chain*, the *authentication-system* sends back a *user-unique-id* and his face-photo. This *user-unique-id* is unique for the couple (user, *vote-block-chain*) and not reversible to the user. This *user-unique-id* is delivered to the user. This *user-unique-id* can be used by the user to check his status in the block-chain. The app writes in the *vote-block-chain* the status *voting* for this *user-unique-id*.
 
 If the users leaves the app before the end of protocol, the app writes in the *vote-block-chain* the status *not-yet-vote* for this *user-unique-id*.
 
