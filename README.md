@@ -44,7 +44,7 @@ The app checks the face on the video against the face provided by the *authentic
 The user's vote (video without face, and choice) is sent to two users part of his *e-electoral-office*. If the two users validates the vote (panoramic view, oral-choice=digital-choice), the vote is set as *correct* in the *e-electoral-office*. Else the vote is sent to another user, up to have two validations. If it is impossible to have a validation, the user can choose to restart his vote. The user can also leave from this *e-electoral-office* (the app writes in the *vote-block-chain* the status *not-yet-vote* for the *user-unique-id*).
 
 When all votes are *correct* in the *e-electoral-office*, the list of user's-id/vote is sent to all the users of the *e-electoral-office*.
-If all participants validate the list, the *e-electoral-office* is declared as *voted* in the *vote-block-chain*, with the list of votes (without *user-unique-id*). The app writes in the *vote-block-chain* the status *voted* for the *user-unique-id*. 
+If all participants validate the list, the *e-electoral-office* is declared as *voted* in the *vote-block-chain*, with the list of votes. The app writes in the *vote-block-chain* the status *voted* for the *user-unique-id*. 
 
 If the participants does not validate the list, the *e-electoral-office* is declared as *non-valid* in the *vote-block-chain*, and the app writes in the *vote-block-chain* the status *not-yet-vote* for the *user-unique-id*.
 
