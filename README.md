@@ -30,7 +30,7 @@ One central *authentication-system* :
 
 ### e-electoral-office use-case :
 
-Starting the *e-electoral-office* app, the user makes an authentication on the external *authentication-system* and the *vote-block-chain* he needs. If the users has the right  status  in the *vote-block-chain*, the *authentication-system* sends back a *user-unique-id* and his face-photo. This *user-unique-id* is unique for the couple (user, *vote-block-chain*) and not reversible to the user. This *user-unique-id* is delivered to the user. This *user-unique-id* can be used by the user to check his status in the block-chain. The app writes in the *vote-block-chain* the status *voting* for this *user-unique-id*.
+Starting the *e-electoral-office* app, the user makes an authentication on the external *authentication-system* and the *vote-block-chain* he needs. If the users has the right  status  in the *vote-block-chain*, the *authentication-system* sends back a *user-unique-id* and his face-photo. This *user-unique-id* is unique for the couple (user, *vote-block-chain*) and not reversible to the user. This *user-unique-id* is delivered to the user. This *user-unique-id* can be used by the user to check his status in the block-chain. The app writes in the *vote-block-chain* the status *voting* for this *user-unique-id*. The *authentication-system* writes in the *vote-block-chain* the status *registered* for this *user-unique-id*
 
 If the users leaves the app before the end of protocol, the app writes in the *vote-block-chain* the status *not-yet-vote* for this *user-unique-id*.
 
@@ -43,17 +43,45 @@ The app checks the face on the video against the face provided by the *authentic
 
 The user's vote (video without face, and choice) is sent to two users part of his *e-electoral-office*. If the two users validates the vote (panoramic view, oral-choice=digital-choice), the vote is set as *correct* in the *e-electoral-office*. Else the vote is sent to another user, up to have two validations. If it is impossible to have a validation, the user can choose to restart his vote. The user can also leave from this *e-electoral-office* (the app writes in the *vote-block-chain* the status *not-yet-vote* for the *user-unique-id*).
 
-When all votes are *correct* in the *e-electoral-office*, the list of user's-id/vote is sent to all the users of the *e-electoral-office*.
-If all participants validate the list, the *e-electoral-office* is declared as *voted* in the *vote-block-chain*, with the list of votes. The app writes in the *vote-block-chain* the status *voted* for the *user-unique-id*. 
+When all votes are *correct* in the *e-electoral-office*, the list of user's-id/vote is sent to all the users of the *e-electoral-office*. 
+If all participants validate the list, the *e-electoral-office* is declared as *voted* in the *vote-block-chain*, with the list of *user-unique-id*, and the counting of votes. Who vote what is not available in the result of the *e-electoral-office*. The app writes in the *vote-block-chain* the status *voted* for the *user-unique-id*. 
 
 If the participants does not validate the list, the *e-electoral-office* is declared as *non-valid* in the *vote-block-chain*, and the app writes in the *vote-block-chain* the status *not-yet-vote* for the *user-unique-id*.
 
 ### vote-block-chain :
 
 The *vote-block-chain* stores these events :
-- change status of *e-electoral-office* , identified with a *e-electoral-office-id* ( *pending* , *voting*, *voted* with the the anonymous result of the votes)
+- change status of *e-electoral-office* , identified with a *e-electoral-office-id* ( *pending* , *voting*, *voted* with the the result of the votes)
 - change status of user, identified with a *e-electoral-office*-id delivered by *authentication-system* ( *voting* , *noy_yet_vote*, *voted* )
 
 A user can verify his status (using his *user-unique-id* )and his transaction ( using his *e-electoral-office-id*).
 
-A user can count the global result of the vote, reading and summing the counts of *e-electoral-office-id* with status *voted* in the *vote-block-chain*.
+A user can count the global result of the vote, reading and summing the counts of *e-electoral-office-id* with status *voted* in the *vote-block-chain* , and where the *user-unique-id* is set as *registered* in the *vote-block-chain* by the *authentication-system*.
+
+## Resilience
+
+### flooding of votes
+
+issue : A hacker inserts false status in the *vote-block-chain* , simulating many users with *user-unique-id*, voting in many *e-electoral-office*.
+
+resilience : The counting of votes ignores these votes, because the *user-unique-id* are not set as *registered* in the *vote-block-chain* by the *authentication-system*.
+
+### obstacle to validate a vote
+
+issues : only zero or one user in an *e-electoral-office* validates the vote of the user, because other users consider that his choice is "incorrect" for personl reasons.
+
+resilience : increase the minimum of users in the *e-electoral-office* to avoid possible majority. Else, the user can change to another *e-electoral-office*
+
+### reuse identity
+
+issue : A hacker inserts false status in the *vote-block-chain* , reusing many users with existing *user-unique-id*, voting in many *e-electoral-office*.
+
+resilience : The counting of votes ignores these votes, because the *user-unique-id* are reused. only first instance of  *user-unique-id*  is used for the counting.
+
+### reveal vote under constraint
+
+issue : A hacker asks the user his  *user-unique-id*, and reads the *e-electoral-office*.
+
+resilience : The *e-electoral-office* contains the number of votes, and the *user-unique-id*. But it does not contain the list (*user-unique-id*,his vote). The vote can be revealed only in case of unanimity in the *e-electoral-office* : increase the minimum of users in the *e-electoral-office* to avoid possible unanimity.
+
+
